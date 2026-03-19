@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vijay — Brooks Band Technical Spec & Samsung Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0e1a;
+  --bg2: #0f1628;
+  --bg3: #161f35;
+  --teal: #00d4b8;
+  --teal-dim: rgba(0,212,184,0.12);
+  --coral: #ff5f57;
+  --coral-dim: rgba(255,95,87,0.12);
+  --gold: #ffd166;
+  --gold-dim: rgba(255,209,102,0.12);
+  --green: #06d6a0;
+  --green-dim: rgba(6,214,160,0.12);
+  --purple: #a78bfa;
+  --purple-dim: rgba(167,139,250,0.12);
+  --white: #f0f4ff;
+  --muted: rgba(240,244,255,0.45);
+  --border: rgba(240,244,255,0.07);
+  --border-bright: rgba(0,212,184,0.25);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--white);
+  min-height: 100vh;
+}
+
+/* TOPBAR */
+.topbar {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+
+.topbar-logo {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--teal);
+  letter-spacing: 1px;
+}
+
+.topbar-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--coral);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.pulse-dot {
+  width: 7px; height: 7px;
+  background: var(--coral);
+  border-radius: 50%;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.6)} }
+
+/* TABS */
+.tabs {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+}
+
+.tab {
+  padding: 14px 22px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+
+.tab:hover { color: var(--white); }
+.tab.active { color: var(--teal); border-bottom-color: var(--teal); }
+
+/* PANELS */
+.panel { display: none; padding: 40px; max-width: 1100px; margin: 0 auto; }
+.panel.active { display: block; }
+
+/* SECTION */
+.sec { margin-bottom: 48px; }
+
+.sec-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sec-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+h2 { font-size: 26px; font-weight: 700; margin-bottom: 8px; line-height: 1.2; }
+h3 { font-size: 17px; font-weight: 600; margin-bottom: 8px; }
+p { font-size: 14px; color: var(--muted); line-height: 1.7; font-weight: 300; }
+
+/* CARDS */
+.card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px 28px;
+  margin-bottom: 14px;
+  transition: border-color 0.2s;
+}
+
+.card:hover { border-color: var(--border-bright); }
+.card.teal { border-left: 3px solid var(--teal); }
+.card.coral { border-left: 3px solid var(--coral); }
+.card.gold { border-left: 3px solid var(--gold); }
+.card.green { border-left: 3px solid var(--green); }
+.card.purple { border-left: 3px solid var(--purple); }
+
+/* GRID */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+
+/* ALERT BOXES */
+.alert {
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 14px 0;
+  font-size: 14px;
+  line-height: 1.7;
+  font-weight: 400;
+}
+
+.alert.red { background: var(--coral-dim); border: 1px solid rgba(255,95,87,0.3); color: #ffb3b0; }
+.alert.green { background: var(--green-dim); border: 1px solid rgba(6,214,160,0.3); color: #7dffd9; }
+.alert.gold { background: var(--gold-dim); border: 1px solid rgba(255,209,102,0.3); color: #ffe08a; }
+.alert.teal { background: var(--teal-dim); border: 1px solid rgba(0,212,184,0.3); color: #7ffff4; }
+.alert.purple { background: var(--purple-dim); border: 1px solid rgba(167,139,250,0.3); color: #d0bcff; }
+
+.alert-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* CODE BLOCK */
+.code {
+  background: #080c1a;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  line-height: 1.8;
+  color: #a8d8ea;
+  margin: 12px 0;
+  overflow-x: auto;
+}
+
+.code .kw { color: var(--purple); }
+.code .val { color: var(--teal); }
+.code .comment { color: rgba(255,255,255,0.3); }
+.code .str { color: var(--gold); }
+
+/* TAG */
+.tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 4px;
+  margin: 2px;
+}
+
+.tag.teal { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(0,212,184,0.2); }
+.tag.coral { background: var(--coral-dim); color: var(--coral); border: 1px solid rgba(255,95,87,0.2); }
+.tag.gold { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(255,209,102,0.2); }
+.tag.green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(6,214,160,0.2); }
+.tag.gray { background: rgba(255,255,255,0.06); color: var(--muted); }
+
+/* MEMORY MAP */
+.mem-map {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 20px 0;
+  position: relative;
+}
+
+.mem-layer {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 0;
+  position: relative;
+}
+
+.mem-connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 0;
+}
+
+.mem-connector-line {
+  width: 2px;
+  height: 32px;
+  background: linear-gradient(to bottom, var(--teal), rgba(0,212,184,0.3));
+  position: relative;
+}
+
+.mem-connector-label {
+  position: absolute;
+  left: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--teal);
+  white-space: nowrap;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.mem-layer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.mem-layer-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.mem-layer-type {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.mem-layer-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.mem-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+/* FSM VISUAL */
+.fsm-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin: 24px 0;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.fsm-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 110px;
+}
+
+.fsm-circle {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.3;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.fsm-hz {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.fsm-arrow {
+  color: rgba(255,255,255,0.15);
+  font-size: 22px;
+  padding: 0 4px;
+  margin-bottom: 30px;
+}
+
+.s1 { background: rgba(0,212,184,0.15); border: 2px solid var(--teal); color: var(--teal); }
+.s2 { background: rgba(255,209,102,0.15); border: 2px solid var(--gold); color: var(--gold); }
+.s3 { background: rgba(255,95,87,0.15); border: 2px solid var(--coral); color: var(--coral); }
+.s4 { background: rgba(167,139,250,0.15); border: 2px solid var(--purple); color: var(--purple); }
+
+/* QA BLOCKS */
+.qa {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.qa-q {
+  background: var(--bg3);
+  padding: 16px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--white);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+  transition: background 0.2s;
+}
+
+.qa-q:hover { background: rgba(255,255,255,0.04); }
+
+.qa-q.who-q { border-left: 3px solid var(--coral); }
+.qa-q.tech-q { border-left: 3px solid var(--teal); }
+.qa-q.biz-q { border-left: 3px solid var(--gold); }
+
+.qa-toggle { font-size: 18px; color: var(--muted); transition: transform 0.2s; }
+.qa-toggle.open { transform: rotate(45deg); color: var(--teal); }
+
+.qa-a {
+  background: rgba(0,0,0,0.3);
+  padding: 0 20px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s;
+}
+
+.qa-a.open {
+  max-height: 600px;
+  padding: 16px 20px;
+}
+
+.qa-a p { color: rgba(240,244,255,0.75); margin-bottom: 8px; }
+.qa-a p:last-child { margin-bottom: 0; }
+
+.answer-script {
+  background: var(--bg2);
+  border-left: 3px solid var(--teal);
+  padding: 12px 16px;
+  margin: 10px 0;
+  font-size: 13px;
+  color: rgba(240,244,255,0.85);
+  line-height: 1.6;
+  font-style: italic;
+  border-radius: 0 6px 6px 0;
+}
+
+/* WORD TABLE */
+.word-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin: 16px 0;
+}
+
+.word-table th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+}
+
+.word-table td {
+  padding: 11px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.word-table .bad { color: var(--coral); }
+.word-table .good { color: var(--green); }
+.word-table .why { color: var(--muted); font-size: 12px; }
+
+/* CLAIM CARD */
+.claim {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin-bottom: 10px;
+}
+
+.claim-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--teal);
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.claim-text {
+  font-size: 13px;
+  color: rgba(240,244,255,0.7);
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
+
+.claim-note {
+  font-size: 12px;
+  color: var(--gold);
+  font-style: italic;
+}
+
+/* UTC ARCH */
+.utc-arch {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px;
+  margin: 20px 0;
+}
+
+.device-box {
+  background: var(--bg2);
+  border: 1px solid var(--border-bright);
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin-bottom: 14px;
+}
+
+.device-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--teal);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.device-icon { font-size: 18px; }
+
+.spec-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+/* SAMSUNG POINTS */
+.samsung-point {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--teal);
+  border-radius: 0 10px 10px 0;
+  padding: 16px 20px;
+  margin-bottom: 10px;
+}
+
+.sp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.sp-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--teal);
+  text-transform: uppercase;
+}
+
+.sp-who { font-size: 11px; color: var(--muted); }
+.sp-quote { font-size: 13px; font-style: italic; color: rgba(240,244,255,0.65); margin-bottom: 8px; line-height: 1.5; }
+.sp-answer { font-size: 13px; color: rgba(240,244,255,0.85); line-height: 1.6; }
+
+/* SCROLL TOP */
+.scroll-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--teal);
+  color: var(--bg);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 700;
+  z-index: 300;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.scroll-top.visible { opacity: 1; }
+
+@media (max-width: 700px) {
+  .panel { padding: 24px 16px; }
+  .tabs { padding: 0 16px; }
+  .topbar { padding: 12px 16px; }
+  .grid2, .grid3 { grid-template-columns: 1fr; }
+  .fsm-row { overflow-x: scroll; padding-bottom: 8px; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-logo">BB_TECHSPEC // VIJAY_BRIEFING v1.0</div>
+  <div class="topbar-status">
+    <div class="pulse-dot"></div>
+    SAMSUNG MTG 3 — MARCH 19, 2026
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="showTab('architecture')">Architecture</div>
+  <div class="tab" onclick="showTab('memory')">Memory Map</div>
+  <div class="tab" onclick="showTab('utc')">UTC / Clip-On</div>
+  <div class="tab" onclick="showTab('samsung')">Samsung Points</div>
+  <div class="tab" onclick="showTab('qa')">Q&A Prep</div>
+  <div class="tab" onclick="showTab('patent')">Patent Claims</div>
+  <div class="tab" onclick="showTab('language')">FDA Language</div>
+  <div class="tab" onclick="showTab('redzone')">🔴 Red Zones</div>
+</div>
+
+<!-- ========== TAB 1: ARCHITECTURE ========== -->
+<div class="panel active" id="panel-architecture">
+
+  <div class="sec">
+    <div class="sec-title">System Overview</div>
+    <h2>Brooks Band™ System Architecture</h2>
+    <p>A dual-device, four-state adaptive wearable platform. The Galaxy Watch 8 is the primary sensing node. The UTC clip-on microphone module is the secondary device. All intelligence runs on-device first, then syncs to cloud.</p>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">The Four-State FSM</div>
+    <p style="margin-bottom:20px;">This is your core patented innovation. Every question Tim Calabro asks about the algorithm traces back to this. Know it cold.</p>
+
+    <div class="fsm-row">
+      <div class="fsm-node">
+        <div class="fsm-circle s1">SENTRY<br>MODE</div>
+        <div class="fsm-hz">Low sample rate<br>Battery-efficient</div>
+      </div>
+      <div class="fsm-arrow">→</div>
+      <div class="fsm-node">
+        <div class="fsm-circle s2">ELEVATED<br>MONITOR</div>
+        <div class="fsm-hz">Mid sample rate<br>Rising indicators</div>
+      </div>
+      <div class="fsm-arrow">→</div>
+      <div class="fsm-node">
+        <div class="fsm-circle s3">ALERT</div>
+        <div class="fsm-hz">High sample rate<br>Haptic triggers</div>
+      </div>
+      <div class="fsm-arrow">→</div>
+      <div class="fsm-node">
+        <div class="fsm-circle s4">COOL<br>DOWN</div>
+        <div class="fsm-hz">Recovery phase<br>Log + return</div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card teal">
+        <h3 style="color:var(--teal)">Sentry Mode</h3>
+        <p>Default passive state. Minimum CPU/sensor polling to preserve battery. Monitors voice amplitude baseline and biometric baseline. Watching for threshold approach. Uses bandpass filter + RMS-to-dBFS conversion on audio. No events logged unless threshold approached.</p>
+      </div>
+      <div class="card gold">
+        <h3 style="color:var(--gold)">Elevated Monitor</h3>
+        <p>Activated when voice amplitude trends upward AND heart rate IBI shortens AND EDA shows rising conductance. Sampling rate increases. System enters pre-alert awareness. Pre-escalation window is captured with full biometric context for clinical reporting.</p>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="card coral">
+        <h3 style="color:var(--coral)">Alert State</h3>
+        <p>Threshold exceeded. Haptic pattern fires immediately — specific vibration cadence distinguishable from notification vibrations. Optional LED indicator (red light, UTC prototype). Bidirectional: fires for voice too HIGH and voice too LOW (speak-up cue). Event timestamped. Regulation Beats prompt or box breathing cue can trigger.</p>
+      </div>
+      <div class="card purple">
+        <h3 style="color:var(--purple)">Cooldown</h3>
+        <p>Post-alert recovery. Sampling remains elevated. System monitors whether user has self-regulated. Transition back to Sentry when baseline restored. Cooldown duration is logged — this is a key clinical metric. Time-to-recovery is reportable in IEP documentation.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">Audio Pipeline</div>
+
+    <div class="alert teal">
+      <span class="alert-label">Privacy-First Design — Critical to Understand</span>
+      The system NEVER records speech. It captures amplitude envelope only. A 10-second rolling buffer continuously overwrites itself. Only the processed dBFS value and timestamp are stored. No audio content ever persists on device or transfers to cloud.
+    </div>
+
+    <div class="code">
+<span class="comment">// Audio Pipeline — Galaxy Watch 8 Microphone</span>
+<span class="kw">AudioRecord</span> → <span class="val">foreground service</span> (continuous capture)
+    ↓
+<span class="kw">Bandpass Filter</span> → <span class="val">isolates voice frequency range</span> (300Hz - 3400Hz)
+    ↓
+<span class="kw">RMS Calculation</span> → <span class="val">root mean square of PCM buffer</span>
+    ↓
+<span class="kw">dBFS Conversion</span> → <span class="val">20 * log10(rms / 32768)</span>
+    ↓
+<span class="kw">Rolling Buffer</span> → <span class="val">10-second window, continuous overwrite</span>
+    ↓
+<span class="kw">Threshold Compare</span> → <span class="val">FSM state transition decision</span>
+    ↓
+<span class="kw">Room DB</span> → <span class="val">stores dBFS value + timestamp only</span>
+<span class="comment">// NO raw audio ever stored or transmitted</span>
+    </div>
+
+    <div class="alert gold">
+      <span class="alert-label">What Tim Calabro Will Ask About This</span>
+      "How are you handling the microphone capture?" — Answer: Foreground service with AudioRecord API. Bandpass filtering at 300–3400Hz voice frequency range. RMS-to-dBFS conversion. Rolling 10-second overwrite buffer. We detect amplitude only. Samsung confirmed in Meeting 1 this is feasible but the most complex piece. We have it built and running on emulator.
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">Technology Stack</div>
+
+    <div class="grid3">
+      <div class="card teal">
+        <h3>Wear OS Layer</h3>
+        <div class="spec-row" style="margin-top:8px">
+          <span class="tag teal">Kotlin</span>
+          <span class="tag teal">Jetpack Compose</span>
+          <span class="tag teal">Wear OS 5</span>
+          <span class="tag teal">AndroidX</span>
+        </div>
+        <p style="margin-top:10px;">Full Jetpack Compose UI. Working demo mode cycling all four FSM states. OSHA session summary screen implemented.</p>
+      </div>
+      <div class="card gold">
+        <h3>Data Layer</h3>
+        <div class="spec-row" style="margin-top:8px">
+          <span class="tag gold">Room DB</span>
+          <span class="tag gold">SQLite</span>
+          <span class="tag gold">Foreground Service</span>
+        </div>
+        <p style="margin-top:10px;">On-device Room database. Foreground service for continuous monitoring. Local queue for batch LTE sync. No SD card (Samsung confirmed this is correct architecture).</p>
+      </div>
+      <div class="card purple">
+        <h3>Samsung SDKs</h3>
+        <div class="spec-row" style="margin-top:8px">
+          <span class="tag purple">Health Sensor SDK</span>
+          <span class="tag gray">Health Data SDK</span>
+          <span class="tag gray">Knox Manage</span>
+        </div>
+        <p style="margin-top:10px;">Primary: Samsung Health Sensor SDK for raw PPG, ECG, accel, EDA. Secondary: Health Data SDK for processed vitals. Knox Manage for device management.</p>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card teal">
+        <h3>Connectivity</h3>
+        <p>LTE — not Wi-Fi. Alex specifically recommended LTE so schools don't lose session data if network drops. Freestanding Mode: watch operates fully independently post-enrollment. One phone activates unlimited watches for bulk school deployments.</p>
+      </div>
+      <div class="card coral">
+        <h3>Deployment</h3>
+        <p>Knox Manage enrollment via QR code. Pair & Detach process — watch fully detaches from phone after initial setup. IT admin can remotely push app updates, lock settings, control volume levels, schedule monitoring windows, and factory reset. Staging/kitting via Pentech (Jay Gordon).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">Samsung Sensor SDK — Raw Data Available to Your Algorithm</div>
+
+    <div class="alert teal">
+      <span class="alert-label">Alex Said In Meeting 1</span>
+      "99% of our partners are actually developing their own algorithm, which is the key difference maker for us, because you cannot actually do that with any other wearable." — This is your moat. The raw PPG, ECG, and EDA data on Samsung is unavailable on Apple or other OEMs.
+    </div>
+
+    <table class="word-table">
+      <thead>
+        <tr>
+          <th>Sensor</th>
+          <th>Data Type</th>
+          <th>FSM Use</th>
+          <th>Phase</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="color:var(--teal);font-family:'JetBrains Mono',monospace;font-size:12px">PPG Green/Red/IR</td>
+          <td>Raw waveform</td>
+          <td>Heart rate pattern, pre-escalation signature</td>
+          <td><span class="tag green">Phase 1</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--teal);font-family:'JetBrains Mono',monospace;font-size:12px">Accelerometer</td>
+          <td>Raw X/Y/Z</td>
+          <td>Motion context — distinguish voice from movement artifact</td>
+          <td><span class="tag green">Phase 1</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--teal);font-family:'JetBrains Mono',monospace;font-size:12px">Heart Rate + IBI</td>
+          <td>Processed</td>
+          <td>Inter-beat interval shortening = arousal rising</td>
+          <td><span class="tag green">Phase 1</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--teal);font-family:'JetBrains Mono',monospace;font-size:12px">Skin Temperature</td>
+          <td>Processed</td>
+          <td>Thermal arousal correlation</td>
+          <td><span class="tag green">Phase 1</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--teal);font-family:'JetBrains Mono',monospace;font-size:12px">EDA</td>
+          <td>Electrodermal</td>
+          <td>Sympathetic nervous system arousal — most direct indicator</td>
+          <td><span class="tag gold">Phase 2</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--teal);font-family:'JetBrains Mono',monospace;font-size:12px">ECG</td>
+          <td>Raw</td>
+          <td>HRV analysis for deeper arousal modeling</td>
+          <td><span class="tag gold">Phase 2</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--teal);font-family:'JetBrains Mono',monospace;font-size:12px">SpO2</td>
+          <td>Blood oxygen</td>
+          <td>Respiratory pattern changes during escalation</td>
+          <td><span class="tag purple">Phase 3</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="alert gold">
+      <span class="alert-label">EDA — Flag This for Tim</span>
+      Alex specifically flagged EDA (electrodermal activity) in Meeting 1 as a new API Samsung exposed in October — and said it may be highly relevant for detecting arousal in the neurodivergent population. If Tim asks about your algorithm inputs, mention EDA. It signals you've read the SDK documentation seriously.
+    </div>
+  </div>
+
+</div>
+
+<!-- ========== TAB 2: MEMORY MAP ========== -->
+<div class="panel" id="panel-memory">
+
+  <div class="sec">
+    <div class="sec-title">Memory & Data Flow Architecture</div>
+    <h2>Where Data Lives, Moves, and Learns</h2>
+    <p>This is a four-layer architecture. Each layer has a distinct role. The AI lives in Layer 4 — the cloud. The watch is the sensing and response layer only.</p>
+  </div>
+
+  <div class="mem-map">
+
+    <div class="mem-layer" style="border-color:var(--teal);border-left:3px solid var(--teal)">
+      <div class="mem-layer-header">
+        <div class="mem-layer-name" style="color:var(--teal)">LAYER 1 — Galaxy Watch 8 / Room Database</div>
+        <div class="mem-layer-type" style="background:var(--teal-dim);color:var(--teal)">ON-DEVICE</div>
+      </div>
+      <div class="mem-layer-desc">First data layer. Everything starts here. Room DB (SQLite) runs directly on the watch. Persists through LTE drops. No internet required to store sessions.</div>
+      <div class="mem-items">
+        <span class="tag teal">Timestamped dBFS values</span>
+        <span class="tag teal">Heart rate + IBI events</span>
+        <span class="tag teal">Skin temperature readings</span>
+        <span class="tag teal">Accelerometer data</span>
+        <span class="tag teal">EDA readings</span>
+        <span class="tag teal">FSM state transitions</span>
+        <span class="tag teal">Alert event logs</span>
+        <span class="tag teal">Session start/end</span>
+        <span class="tag teal">OSHA calculations</span>
+        <span class="tag coral">10-sec rolling audio buffer → auto-erases</span>
+      </div>
+    </div>
+
+    <div class="mem-connector">
+      <div style="position:relative;width:2px;height:40px;background:linear-gradient(to bottom, var(--teal), var(--gold));margin:0 auto">
+        <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--teal);white-space:nowrap">LTE — real-time alerts + batch session sync</span>
+      </div>
+    </div>
+
+    <div class="mem-layer" style="border-color:var(--gold);border-left:3px solid var(--gold)">
+      <div class="mem-layer-header">
+        <div class="mem-layer-name" style="color:var(--gold)">LAYER 2 — LTE Transition Layer</div>
+        <div class="mem-layer-type" style="background:var(--gold-dim);color:var(--gold)">TRANSPORT</div>
+      </div>
+      <div class="mem-layer-desc">Data moves from watch to cloud via LTE through the foreground service. Two modes run simultaneously: real-time streaming for critical alerts, batch sync for raw session data.</div>
+      <div class="mem-items">
+        <span class="tag gold">Real-time: FSM state changes push immediately</span>
+        <span class="tag gold">Real-time: Alert events push immediately</span>
+        <span class="tag gold">Batch: Raw biometrics sync on schedule</span>
+        <span class="tag gold">Offline queue: Room DB holds data during LTE loss</span>
+        <span class="tag coral">NEVER transmits: raw audio buffer</span>
+      </div>
+    </div>
+
+    <div class="mem-connector">
+      <div style="position:relative;width:2px;height:40px;background:linear-gradient(to bottom, var(--gold), var(--purple));margin:0 auto">
+        <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--gold);white-space:nowrap">HTTPS / encrypted / consent-scoped routing</span>
+      </div>
+    </div>
+
+    <div class="mem-layer" style="border-color:var(--purple);border-left:3px solid var(--purple)">
+      <div class="mem-layer-header">
+        <div class="mem-layer-name" style="color:var(--purple)">LAYER 3 — Cloud Backend (Sensory Bridges)</div>
+        <div class="mem-layer-type" style="background:var(--purple-dim);color:var(--purple)">CLOUD / AT REST</div>
+      </div>
+      <div class="mem-layer-desc">Session storage, report generation, professional dashboard. Data is consent-scoped here — FERPA for school deployments, HIPAA for clinical channel. This layer does NOT make clinical decisions. It organizes data transparently for professionals.</div>
+      <div class="mem-items">
+        <span class="tag purple">Complete session records</span>
+        <span class="tag purple">FSM event logs with biometric context</span>
+        <span class="tag purple">IEP report generation</span>
+        <span class="tag purple">504 documentation</span>
+        <span class="tag purple">OSHA session export</span>
+        <span class="tag purple">Professional dashboard API</span>
+        <span class="tag purple">Multi-watch school deployment view</span>
+        <span class="tag purple">Consent chain management</span>
+        <span class="tag gold">Phase 2 target: personalized threshold parameters stored here, pulled by watch at session start</span>
+      </div>
+    </div>
+
+    <div class="mem-connector">
+      <div style="position:relative;width:2px;height:40px;background:linear-gradient(to bottom, var(--purple), var(--green));margin:0 auto">
+        <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--purple);white-space:nowrap">Session history feeds learning model</span>
+      </div>
+    </div>
+
+    <div class="mem-layer" style="border-color:var(--green);border-left:3px solid var(--green)">
+      <div class="mem-layer-header">
+        <div class="mem-layer-name" style="color:var(--green)">LAYER 4 — AI / Learning Model (Cloud — Phase 2+)</div>
+        <div class="mem-layer-type" style="background:var(--green-dim);color:var(--green)">AI LAYER</div>
+      </div>
+      <div class="mem-layer-desc">NOT YET BUILT — this is the roadmap. The on-device FSM is deterministic (rule-based) in Phase 1. The learning model lives in the cloud and feeds personalized parameters back to the watch. This is the long-term moat.</div>
+
+      <div style="margin-top:14px">
+        <div class="card" style="background:rgba(6,214,160,0.05);border-color:rgba(6,214,160,0.2);margin-bottom:10px">
+          <h3 style="color:var(--green);font-size:14px">Phase 2 — Personalized Baseline Learning</h3>
+          <p>Ingests session history from cloud backend. Builds individual biometric baseline per student — their typical heart rate, voice amplitude range during calm, EDA baseline. Adjusts FSM thresholds automatically per child. Watch pulls updated parameters from cloud at session start. This is NOT diagnosis — it is personalized calibration, the same way a fitness tracker learns your resting heart rate.</p>
+        </div>
+        <div class="card" style="background:rgba(6,214,160,0.05);border-color:rgba(6,214,160,0.2);margin-bottom:10px">
+          <h3 style="color:var(--green);font-size:14px">Phase 3 — Multi-Modal Pattern Recognition</h3>
+          <p>Correlates voice amplitude + heart rate IBI + EDA together to identify each child's unique pre-escalation signature. No single signal is a reliable predictor. The combination, learned over weeks, creates predictive biometric awareness. Still framed as awareness, not diagnosis. The model surfaces a pattern — the educator decides what to do with it.</p>
+        </div>
+        <div class="card" style="background:rgba(6,214,160,0.05);border-color:rgba(6,214,160,0.2)">
+          <h3 style="color:var(--green);font-size:14px">Phase 4 — Population Insights</h3>
+          <p>Cross-student pattern analysis. Which intervention prompts correlate with faster recovery. What biometric signatures are most predictive across age groups. Research and outcomes layer that Pearson, school districts, and research institutions pay for separately.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="alert gold" style="margin-top:24px">
+    <span class="alert-label">What To Say When Samsung Asks "Where Does The Intelligence Live?"</span>
+    "Phase 1 uses a deterministic four-state FSM with manually calibrated thresholds running entirely on-device. The learning model is designed to live in the cloud backend in Phase 2 — it ingests session history synced from the watch's local Room database and builds personalized biometric baselines per student. The on-device FSM then pulls updated threshold parameters from the cloud at the start of each session. The watch stays the sensing and response layer. The cloud becomes the learning layer."
+  </div>
+
+</div>
+
+<!-- ========== TAB 3: UTC / CLIP-ON ========== -->
+<div class="panel" id="panel-utc">
+
+  <div class="sec">
+    <div class="sec-title">UTC BioAstLab Partnership</div>
+    <h2>The Clip-On Microphone Module</h2>
+    <p>This is your ace card with Samsung. In Meeting 2 Megan mentioned a "secondary device — a clip-on with a microphone to capture even more of that." Nate confirmed: "Yeah, there are microphones built into the smart watches so audio can definitely be grabbed and tracked." The clip-on extends accuracy significantly. Here is everything you need to know about it.</p>
+  </div>
+
+  <div class="alert teal">
+    <span class="alert-label">Relationship Structure</span>
+    Sensory Bridges (Sponsor) has a Research & Industry Agreement with the University of Tennessee at Chattanooga, supervised by Dr. Erkan Kaplanoglu (UTC BioAstLab). Sensory Bridges owns ALL IP produced under this agreement — including AI/ML models, algorithms, firmware, and hardware designs. UTC cannot commercialize anything created in this project.
+  </div>
+
+  <div class="utc-arch">
+    <p style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:20px">Dual-Device Architecture</p>
+
+    <div class="device-box">
+      <div class="device-name"><span class="device-icon">⌚</span> Device A — Galaxy Watch 8 (Primary)</div>
+      <div class="spec-row">
+        <span class="tag teal">Wrist-worn</span>
+        <span class="tag teal">Haptic vibration output</span>
+        <span class="tag teal">Red/Yellow/Green LED</span>
+        <span class="tag teal">Heart rate + IBI</span>
+        <span class="tag teal">Skin temperature</span>
+        <span class="tag teal">Accelerometer</span>
+        <span class="tag teal">EDA</span>
+        <span class="tag teal">Built-in microphone</span>
+        <span class="tag teal">Knox Manage (freestanding)</span>
+        <span class="tag teal">Room DB</span>
+        <span class="tag teal">LTE</span>
+      </div>
+      <p style="margin-top:12px;font-size:13px;">Receives BLE signal from clip-on module. Overrides built-in microphone data with higher-fidelity clip-on amplitude when clip-on is paired. Falls back to built-in mic when clip-on is disconnected (fail-safe).</p>
+    </div>
+
+    <div style="text-align:center;padding:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--teal)">
+      ↕ BLE (Bluetooth Low Energy) — real-time amplitude data transmission
+    </div>
+
+    <div class="device-box">
+      <div class="device-name"><span class="device-icon">📎</span> Device B — UTC Clip-On Microphone Module (Secondary)</div>
+      <div class="spec-row">
+        <span class="tag gold">Collar/clothing clip</span>
+        <span class="tag gold">Near-source voice capture</span>
+        <span class="tag gold">Dual-threshold: too-loud + too-soft</span>
+        <span class="tag gold">Automatic Gain Control (AGC)</span>
+        <span class="tag gold">BLE transmission to watch</span>
+        <span class="tag gold">Ambient noise filtering</span>
+        <span class="tag gold">Desk-mountable option</span>
+        <span class="tag gold">Rechargeable battery</span>
+      </div>
+      <p style="margin-top:12px;font-size:13px;">Worn near collar. Captures voice at the source — significantly more accurate than a wrist-based microphone in a classroom environment with background noise. The UTC agreement (Dr. Kaplanoglu) requires delivery of a functioning clip-on prototype with BLE transmission, firmware, and testing documentation.</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">Why The Clip-On Matters Technically</div>
+
+    <div class="grid2">
+      <div class="card teal">
+        <h3>Acoustic Accuracy</h3>
+        <p>A wrist microphone is 60–90cm from the mouth. A collar clip-on is 20–30cm. Signal-to-noise ratio improvement is significant in a classroom with 20+ students. Ambient noise filtering in the clip-on firmware means the dBFS value transmitted to the watch is cleaner — fewer false positives in the FSM.</p>
+      </div>
+      <div class="card teal">
+        <h3>Bidirectional Feedback</h3>
+        <p>The clip-on supports BOTH thresholds — too loud (hypervocalization) AND too soft (hypophonia). This is patented as bidirectional monitoring. The watch-only microphone can detect too-loud but has limited sensitivity for too-soft at wrist distance. The clip-on enables both directions with equivalent accuracy.</p>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="card gold">
+        <h3>Children Who Can't Wear Wristbands</h3>
+        <p>Some neurodivergent children have tactile sensitivities and cannot tolerate wrist-worn devices. The clip-on module can be desk-mounted or worn on clothing without a wristband component. This expands the addressable population — critical for school deployment scale.</p>
+      </div>
+      <div class="card gold">
+        <h3>Patent Coverage</h3>
+        <p>Claims 21–25 in the non-provisional specifically cover the dual-device architecture. The clip-on as a separate module with BLE transmission to a primary wrist device is a claimed innovation. No competitor has filed this combination for the neurodivergent voice monitoring use case.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">What UTC Is Building vs. Samsung Path</div>
+
+    <div class="card coral">
+      <h3>Important Distinction for Tomorrow</h3>
+      <p>The UTC clip-on is being built for the <strong>custom hardware path</strong> (future OVA Solutions manufacturing) — not for the Samsung Galaxy Watch deployment. The Samsung path uses the <strong>built-in watch microphone</strong> for the initial pilot phase. The clip-on extends the platform for users who need higher accuracy or can't wear a wristband. When Samsung asks about the clip-on, frame it as an extension module that connects to the Galaxy Watch ecosystem via BLE — not as a replacement for it.</p>
+    </div>
+
+    <div class="alert gold">
+      <span class="alert-label">How To Answer if Samsung Asks About The Clip-On</span>
+      "We have a secondary microphone module being developed through a university engineering partnership that clips near the collar for higher voice capture accuracy. It transmits amplitude data via BLE to the Galaxy Watch. It's designed for users who need higher fidelity or can't tolerate a wrist device. The watch remains the primary computing and biometric sensing node — the clip-on is an accuracy enhancement module."
+    </div>
+  </div>
+
+</div>
+
+<!-- ========== TAB 4: SAMSUNG POINTS ========== -->
+<div class="panel" id="panel-samsung">
+
+  <div class="sec">
+    <div class="sec-title">Every Samsung Technical Point — With Your Answer</div>
+    <h2>Meeting Transcripts → Your Responses</h2>
+    <p>These are every technical statement Samsung made across Meeting 1 and Meeting 2. For each one, here is what they said and exactly what you say back.</p>
+  </div>
+
+  <div class="samsung-point">
+    <div class="sp-header">
+      <span class="sp-label">Audio Capture</span>
+      <span class="sp-who">Nate Pittock — Meeting 2</span>
+    </div>
+    <div class="sp-quote">"There are microphones built into the smart watches so audio can definitely be grabbed and tracked. We'll have to do a little bit of digging in the background of how to implement that but it's doable. That will be the most complicated thing but it's doable."</div>
+    <div class="sp-answer">✅ YOUR ANSWER: "We have already implemented this. We use AudioRecord via a foreground service with bandpass filtering at the voice frequency range and RMS-to-dBFS conversion. We're using a rolling 10-second overwrite buffer so no audio content is ever stored — amplitude envelope only. The implementation is working on our current emulator build."</div>
+  </div>
+
+  <div class="samsung-point">
+    <div class="sp-header">
+      <span class="sp-label">Biometric Sensors Requested</span>
+      <span class="sp-who">Megan + Nate — Meeting 2</span>
+    </div>
+    <div class="sp-quote">Confirmed: heart rate, temperature, motion, decibel level, vibration, LED light. Nate confirmed all are "totally doable."</div>
+    <div class="sp-answer">✅ YOUR ANSWER: "Yes — we're pulling heart rate with IBI from the Health Sensor SDK, skin and ambient temperature, accelerometer raw data, and voice amplitude from the built-in mic via AudioRecord. EDA is particularly relevant for us as a pre-escalation signal — we noted Samsung exposed that API in October and it maps directly to our algorithm's third input channel."</div>
+  </div>
+
+  <div class="samsung-point">
+    <div class="sp-header">
+      <span class="sp-label">No SD Card Storage</span>
+      <span class="sp-who">Nate Pittock — Meeting 2</span>
+    </div>
+    <div class="sp-quote">"Our wearables don't support SD card. But you can programmatically store in offline mode whatever biometrics you want to collect, then talk to a backend."</div>
+    <div class="sp-answer">✅ YOUR ANSWER: "Understood — we're using Room database on-device as the local buffer. It stores all session data including FSM state transitions and timestamped events. When LTE is available the foreground service syncs batches to our cloud backend. No session data is lost during connectivity gaps."</div>
+  </div>
+
+  <div class="samsung-point">
+    <div class="sp-header">
+      <span class="sp-label">Freestanding Mode Architecture</span>
+      <span class="sp-who">Alex Rainero + Nate — Both Meetings</span>
+    </div>
+    <div class="sp-quote">"The watch is working independently. Once you do the initial enrollment, you detach it from the phone and it will always remain autonomous. Samsung is the only company that has this capability."</div>
+    <div class="sp-answer">✅ YOUR ANSWER: "Freestanding mode is our target architecture. The child only needs the watch — no phone. Knox Manage for IT control, push updates, and remote management. LTE for data transmission. One device activation phone for unlimited watches. This aligns exactly with our school deployment model."</div>
+  </div>
+
+  <div class="samsung-point">
+    <div class="sp-header">
+      <span class="sp-label">Samsung Health Sensor SDK — Raw Data</span>
+      <span class="sp-who">Alex Rainero — Both Meetings</span>
+    </div>
+    <div class="sp-quote">"99% of our partners are developing their own algorithm — the key difference maker is that you can't do that with any other wearable. Raw PPG, ECG, accelerometer."</div>
+    <div class="sp-answer">✅ YOUR ANSWER: "This is central to our platform. Our four-state FSM uses raw PPG for heart rate pattern analysis, accelerometer for motion context, and we're integrating EDA in Phase 2 for sympathetic nervous system arousal correlation. We've reviewed the Health Sensor SDK documentation and understand the difference between the raw sensor data and the processed outputs."</div>
+  </div>
+
+  <div class="samsung-point">
+    <div class="sp-header">
+      <span class="sp-label">Measuring Success / Outcome Reporting</span>
+      <span class="sp-who">Julie Fournier — Meeting 2</span>
+    </div>
+    <div class="sp-quote">"It's not only measuring it — it's being able to report it. That's what investors are going to want to see. How do you measure something changed?"</div>
+    <div class="sp-answer">✅ YOUR ANSWER: "Our Phase 1 pilot success metrics are: device tolerance and wear acceptance rate, threshold calibration accuracy, and educator-documented behavioral response. The FSM logs every state transition with timestamp — we can report alert frequency, time-in-elevated-state, cooldown duration, and recovery time per session. These metrics populate directly into IEP progress documentation."</div>
+  </div>
+
+  <div class="samsung-point">
+    <div class="sp-header">
+      <span class="sp-label">Development Team Question</span>
+      <span class="sp-who">Alex Rainero — Meeting 2</span>
+    </div>
+    <div class="sp-quote">"Do you have a development team, Megan, or are you sourcing that?"</div>
+    <div class="sp-answer">✅ YOUR ANSWER (Vijay says this if it comes up): "I'm Vijay — I'm the AI and algorithm scientist on the platform. I've reviewed the Samsung Health Sensor SDK documentation, understand the freestanding mode architecture, and I'm ready to start the technical whiteboard session. I'm specifically focused on the multi-modal algorithm design and the cloud-based learning model roadmap."</div>
+  </div>
+
+  <div class="samsung-point">
+    <div class="sp-header">
+      <span class="sp-label">Scheduling Controls for Battery</span>
+      <span class="sp-who">Nate — Meeting 2 (Megan raised)</span>
+    </div>
+    <div class="sp-quote">Megan asked if there was "some way we could have it automatically set off during recess and times — to save battery."</div>
+    <div class="sp-answer">✅ YOUR ANSWER: "Knox Manage supports scheduled app behavior and our FSM has a scheduled monitoring window feature — we can disable sensor polling during recess, PE, and lunch. This is configurable per school per child. The scheduling logic is already in the architecture."</div>
+  </div>
+
+  <div class="samsung-point">
+    <div class="sp-header">
+      <span class="sp-label">UX Design for Special Needs</span>
+      <span class="sp-who">Alex Rainero — Meeting 2</span>
+    </div>
+    <div class="sp-quote">"I would absolutely suggest a UX designer — especially because you're dealing with special needs. You want to make sure buttons are easy to press and the amount of items on screen are not overwhelming."</div>
+    <div class="sp-answer">✅ YOUR ANSWER: "Our Jetpack Compose UI is built with minimal screen complexity — the watch face shows only the current state indicator and a single action prompt. The UTC BioAstLab partnership specifically includes a UX validation phase for the target population. We're also building the dashboard with professional-specific views — teacher, OT, and SLP each see only what's relevant to their workflow."</div>
+  </div>
+
+  <div class="samsung-point" style="border-left-color:var(--coral)">
+    <div class="sp-header">
+      <span class="sp-label">WATCH OUT — Ecosystem Partner Introductions</span>
+      <span class="sp-who">Julie Fournier — Meeting 2</span>
+    </div>
+    <div class="sp-quote">"Make sure you're far enough along in the process before we do those introductions. It's your IP, it's their IP — I just don't want what you're doing to get lost."</div>
+    <div class="sp-answer">⚠️ IF RAISED TOMORROW: "We appreciate that guidance. We're keeping partner integration discussions separate from our core platform development. Our patent is filed and our IP boundaries are clear. We'll come back to ecosystem partnership conversations once our architecture is validated."</div>
+  </div>
+
+</div>
+
+<!-- ========== TAB 5: Q&A PREP ========== -->
+<div class="panel" id="panel-qa">
+
+  <div class="sec">
+    <div class="sec-title">Tim Calabro — Technical Questions</div>
+    <p style="margin-bottom:20px;">23-year mobile solutions engineer in Samsung's healthcare vertical. He will go deep. These are his most likely questions.</p>
+
+    <div class="qa">
+      <div class="qa-q tech-q" onclick="toggleQA(this)">
+        "Walk me through your audio processing pipeline." <span class="qa-toggle">+</span>
+      </div>
+      <div class="qa-a">
+        <p>This is your most important technical answer. Be precise and confident.</p>
+        <div class="answer-script">"We capture audio via the watch's built-in microphone using Android's AudioRecord API running in a persistent foreground service. We apply a bandpass filter at the voice frequency range — roughly 300 to 3400 Hz — to isolate voice from ambient noise. We compute an RMS value from the PCM buffer and convert to dBFS: 20 times log10 of RMS divided by 32768. That dBFS value feeds into our FSM threshold comparison. We use a 10-second rolling overwrite buffer so no audio content is ever stored anywhere — we capture amplitude envelope only, never speech content."</div>
+      </div>
+    </div>
+
+    <div class="qa">
+      <div class="qa-q tech-q" onclick="toggleQA(this)">
+        "What SDK are you using and which data types?" <span class="qa-toggle">+</span>
+      </div>
+      <div class="qa-a">
+        <div class="answer-script">"Our primary SDK is the Samsung Health Sensor SDK — the private SDK — for raw sensor data. We're pulling raw PPG green, red, and infrared, accelerometer X/Y/Z, heart rate with inter-beat intervals, and skin temperature. We're also integrating EDA in Phase 2. For the processed data layer we'll use the Health Data SDK as a secondary source. We're operating in freestanding mode so we're using the freestanding-compatible APIs, not the companion mode stack."</div>
+      </div>
+    </div>
+
+    <div class="qa">
+      <div class="qa-q tech-q" onclick="toggleQA(this)">
+        "How does your FSM work technically?" <span class="qa-toggle">+</span>
+      </div>
+      <div class="qa-a">
+        <div class="answer-script">"It's a four-state adaptive finite state machine — Sentry, Elevated Monitor, Alert, and Cooldown. Each state has a distinct sampling rate to balance data fidelity against battery consumption. In Sentry we poll at minimum frequency. When voice amplitude trends toward threshold and heart rate IBI shortens, we transition to Elevated Monitor and increase sampling rate. When the combined threshold is exceeded, we enter Alert — haptic fires, event is timestamped and logged to Room database. After alert the system enters Cooldown and monitors recovery to baseline before returning to Sentry."</div>
+      </div>
+    </div>
+
+    <div class="qa">
+      <div class="qa-q tech-q" onclick="toggleQA(this)">
+        "What's your data persistence architecture?" <span class="qa-toggle">+</span>
+      </div>
+      <div class="qa-a">
+        <div class="answer-script">"On-device Room database — Android's SQLite abstraction — running on the watch. This is our local buffer. It stores all timestamped session data including FSM state transitions, alert events, and biometric readings. The foreground service batches this data and syncs to our cloud backend via LTE when connectivity is available. No SD card — we understood from the prior meetings that Samsung watches don't support SD, so the Room database plus LTE architecture is the correct path."</div>
+      </div>
+    </div>
+
+    <div class="qa">
+      <div class="qa-q tech-q" onclick="toggleQA(this)">
+        "Have you worked through the Wear OS development challenges?" <span class="qa-toggle">+</span>
+      </div>
+      <div class="qa-a">
+        <div class="answer-script">"Yes — we've resolved Gradle 8.x compatibility issues, manifest configuration for freestanding mode, and Kotlin string format handling. The app is running on emulator with a full demo mode cycling all four FSM states and an OSHA session summary screen. The main reason we're excited about the weekly technical cadence calls you offered is that freestanding mode documentation isn't publicly available — we want to make sure we're building correctly against the private SDK before we go to device testing."</div>
+      </div>
+    </div>
+
+    <div class="qa">
+      <div class="qa-q tech-q" onclick="toggleQA(this)">
+        "How are you handling battery life?" <span class="qa-toggle">+</span>
+      </div>
+      <div class="qa-a">
+        <div class="answer-script">"The adaptive sampling rate in the FSM is the primary battery optimization. In Sentry mode we're polling at the minimum viable frequency. We only increase sampling rate when indicators suggest escalation is approaching. We also have scheduled monitoring windows — the system can be configured to power down sensor polling during recess, PE, and lunch. Knox Manage can control this scheduling remotely. Our target is full school-day battery life on the Watch 8."</div>
+      </div>
+    </div>
+
+    <div class="qa">
+      <div class="qa-q tech-q" onclick="toggleQA(this)">
+        "What's the role of EDA in your algorithm?" <span class="qa-toggle">+</span>
+      </div>
+      <div class="qa-a">
+        <div class="answer-script">"EDA — electrodermal activity — measures galvanic skin response driven by the sympathetic nervous system. It's a direct physiological marker of emotional arousal. We noted Samsung exposed this API in October, and Alex flagged it as potentially highly relevant for our population. In Phase 2 we're integrating EDA as a third input channel alongside voice amplitude and heart rate IBI. No single signal is a reliable predictor of arousal in a neurodivergent child — the multi-modal combination is where the algorithm's real value lives."</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">Julie Fournier — Business / Outcome Questions</div>
+
+    <div class="qa">
+      <div class="qa-q biz-q" onclick="toggleQA(this)">
+        "How do you measure success? What changes?" <span class="qa-toggle">+</span>
+      </div>
+      <div class="qa-a">
+        <p>Julie pushed hardest on this in Meeting 2. Have a crisp answer.</p>
+        <div class="answer-script">"Phase 1 pilot metrics are: device wear tolerance and acceptance rate, threshold calibration accuracy across users, and educator-documented behavioral response. Our FSM logs every state transition — so we can report alert frequency per session, time-in-elevated-state, cooldown duration, and time-to-recovery. These metrics feed directly into IEP progress documentation which is the funding mechanism for schools. The pilot is designed to produce that data."</div>
+      </div>
+    </div>
+
+    <div class="qa">
+      <div class="qa-q biz-q" onclick="toggleQA(this)">
+        "What's your go-to-market and business model?" <span class="qa-toggle">+</span>
+      </div>
+      <div class="qa-a">
+        <div class="answer-script">"Schools purchase the Galaxy Watch 8 with our software bundled — hardware sale. Platform subscription at approximately $49 per student per year for the administrative reporting dashboard. Therapy practices pay approximately $29 per client per month. We have 12 schools and therapy centers ready to pilot. Letters of intent are being converted to agreements. Target commercial go-to-market is fall 2026."</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">If You Don't Know The Answer</div>
+    <div class="alert gold">
+      <span class="alert-label">Your Safe Phrase — Use It Without Hesitation</span>
+      "That's a great question — I want to give you an accurate answer rather than a fast one. Can I follow up directly after this meeting?" Tim Calabro has 23 years of experience. He will know immediately if you're bluffing. Intellectual honesty builds more credibility than false confidence. Never guess. Never bluff.
+    </div>
+  </div>
+
+</div>
+
+<!-- ========== TAB 6: PATENT CLAIMS ========== -->
+<div class="panel" id="panel-patent">
+
+  <div class="sec">
+    <div class="sec-title">Non-Provisional Patent — Filed March 5, 2026</div>
+    <h2>50-Claim Architecture — What's Protected</h2>
+    <p>Patent attorney: Edwin De Angel. Priority claim from provisional US 63/767,320 filed March 5, 2025. These are the boundaries of what you can freely discuss and what connects to your technical architecture.</p>
+  </div>
+
+  <div class="alert teal">
+    <span class="alert-label">Your Core Novel Claim — Strongest Position</span>
+    The four-state FSM with adaptive sampling rates applied specifically to voice output monitoring in the neurodivergent population. No prior art was identified for this combination across any database searched. This is your moat.
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">Claims 1–10 — Bidirectional Monitoring Method</div>
+
+    <div class="claim">
+      <div class="claim-num">CLAIMS 1–10 COVER</div>
+      <div class="claim-text">Core method with haptic feedback, thermal feedback, context-aware adaptation, biometric integration, and clinical documentation output. Bidirectional monitoring — both hypervocalization (too loud) AND hypophonia (too soft). This combination is unclaimed territory in the prior art.</div>
+      <div class="claim-note">→ Your FSM directly implements this. Safe to discuss with Samsung as your core innovation.</div>
+    </div>
+
+    <div class="claim">
+      <div class="claim-num">KEY DIFFERENTIATOR FROM PRIOR ART</div>
+      <div class="claim-text">Pidgeon/Wei (US20150110277A1) — abandoned 2017 — covered basic voice volume threshold monitoring. It was rejected for obviousness. Our claims go beyond by combining: (a) bidirectional thresholds + (b) multi-state adaptive sampling + (c) biometric correlation + (d) population-specific algorithms. No prior art covers this combination.</div>
+      <div class="claim-note">→ If Samsung asks about competitors or prior patents — this is the answer.</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">Claims 11–20 — Wearable System Hardware</div>
+    <div class="claim">
+      <div class="claim-num">CLAIMS 11–20 COVER</div>
+      <div class="claim-text">Hardware architecture covering wrist-worn device, multiple form factors (wristband, scrunchie, pendant, clip-on), dual-device option, and the specific sensor combination. The scrunchie form factor is unique and unclaimed in all prior art.</div>
+      <div class="claim-note">→ Relevant when Samsung asks about form factors for children with tactile sensitivities.</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">Claims 21–25 — Dual-Device Architecture</div>
+    <div class="claim">
+      <div class="claim-num">CLAIMS 21–25 COVER</div>
+      <div class="claim-text">The separate microphone module + wrist unit architecture. BLE transmission of amplitude data from clip-on module to primary wrist device. This is the UTC BioAstLab deliverable. These claims protect the dual-device system directly.</div>
+      <div class="claim-note">→ This is why the UTC clip-on work is strategically important beyond just accuracy improvement. It's patented architecture.</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">Claims 36–40 — Clinical Integration System</div>
+    <div class="claim">
+      <div class="claim-num">CLAIMS 36–40 COVER</div>
+      <div class="claim-text">IEP documentation generation, SOAP note output, Zones of Regulation integration, Medicaid billing documentation. The clinical integration layer is a claimed innovation — no competitor has claimed this combination of wearable biometric output + automatic clinical documentation generation for the special education population.</div>
+      <div class="claim-note">→ This is the platform moat. The dashboard isn't just a feature — it's patented IP.</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">Claims 46–50 — Population-Specific Algorithms</div>
+    <div class="claim">
+      <div class="claim-num">CLAIMS 46–50 COVER</div>
+      <div class="claim-text">Autism-specific calibration algorithms vs. other population calibrations (dementia, ADHD). Population-specific algorithm differentiation is unclaimed territory. This is where the Phase 2 learning model connects directly to patent protection.</div>
+      <div class="claim-note">→ When Samsung asks about your AI/learning model roadmap, frame it within population-specific personalization — this is your protected territory.</div>
+    </div>
+  </div>
+
+  <div class="alert coral">
+    <span class="alert-label">IP Boundary — What NOT To Discuss in Detail</span>
+    Do not discuss specific claim language, exact threshold values, specific algorithm parameters, or training data approaches in the Samsung meeting. The NDA covers general disclosure but detailed claim specifics should stay with Edwin De Angel. If Samsung asks for deep technical IP details, say: "We're happy to share architecture detail under our existing NDA — specific claim language we keep with our patent counsel."
+  </div>
+
+</div>
+
+<!-- ========== TAB 7: FDA LANGUAGE ========== -->
+<div class="panel" id="panel-language">
+
+  <div class="sec">
+    <div class="sec-title">FDA Language Filter — Active for This Meeting</div>
+    <h2>What You Say. What You Never Say.</h2>
+    <p>The FDA classifies devices based on intended use — and intended use is determined by your marketing language. Every word you use in this meeting is on record. Samsung's team will use your language in their internal documentation. Make sure it's clean.</p>
+  </div>
+
+  <div class="alert teal">
+    <span class="alert-label">Sensory Bridges Classification</span>
+    We are ASSISTIVE TECHNOLOGY under IDEA (Individuals with Disabilities Education Act) — the same legal category as AAC devices and adaptive keyboards. The wearable provides biometric awareness. The dashboard is an administrative documentation tool. We are NOT a medical device. We do NOT diagnose. We do NOT treat.
+  </div>
+
+  <table class="word-table">
+    <thead>
+      <tr>
+        <th>❌ Never Say This</th>
+        <th>✅ Say This Instead</th>
+        <th>Why It Matters</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="bad">meltdown</td>
+        <td class="good">elevated arousal event / sensory escalation</td>
+        <td class="why">Clinical behavioral crisis term — implies diagnosis</td>
+      </tr>
+      <tr>
+        <td class="bad">overstimulation</td>
+        <td class="good">elevated sensory activity</td>
+        <td class="why">Clinical sensory processing term tied to ASD diagnosis</td>
+      </tr>
+      <tr>
+        <td class="bad">detect a meltdown</td>
+        <td class="good">recognize rising biometric indicators</td>
+        <td class="why">Predictive diagnostic language = SaMD territory</td>
+      </tr>
+      <tr>
+        <td class="bad">intervene / intervention</td>
+        <td class="good">prompt / awareness cue / educator-directed support</td>
+        <td class="why">Clinical treatment word</td>
+      </tr>
+      <tr>
+        <td class="bad">anxiety / stress detection</td>
+        <td class="good">elevated physiological activity</td>
+        <td class="why">Disease/condition reference — triggers medical device review</td>
+      </tr>
+      <tr>
+        <td class="bad">lower anxiety / reduce stress</td>
+        <td class="good">support self-awareness and calming routines</td>
+        <td class="why">Treatment outcome claim — most dangerous phrase</td>
+      </tr>
+      <tr>
+        <td class="bad">remote patient monitoring</td>
+        <td class="good">wearable data collection for educational settings</td>
+        <td class="why">Regulated category — Samsung's own term for a different use case</td>
+      </tr>
+      <tr>
+        <td class="bad">clinical dashboard</td>
+        <td class="good">administrative reporting platform</td>
+        <td class="why">Implies clinical decision support = SaMD</td>
+      </tr>
+      <tr>
+        <td class="bad">biomarker</td>
+        <td class="good">biometric indicator / observable data point</td>
+        <td class="why">Clinical/medical research term</td>
+      </tr>
+      <tr>
+        <td class="bad">diagnose / diagnosis</td>
+        <td class="good">Never use. Ever.</td>
+        <td class="why">Immediate Class II/III SaMD trigger</td>
+      </tr>
+      <tr>
+        <td class="bad">treat / therapeutic</td>
+        <td class="good">support / assistive</td>
+        <td class="why">Treatment claims = medical device</td>
+      </tr>
+      <tr>
+        <td class="bad">patient</td>
+        <td class="good">student / user</td>
+        <td class="why">Medical context framing</td>
+      </tr>
+      <tr>
+        <td class="bad">arousal detection algorithm</td>
+        <td class="good">adaptive biometric awareness system</td>
+        <td class="why">Diagnostic algorithm claim</td>
+      </tr>
+      <tr>
+        <td class="bad">behavior modification</td>
+        <td class="good">self-awareness support</td>
+        <td class="why">Clinical behavioral therapy term</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="alert gold">
+    <span class="alert-label">The One Sentence That Frames Everything Correctly</span>
+    "Brooks Band is assistive technology. The wearable provides biometric awareness. The platform helps educators and clinicians generate the documentation they're already legally required to produce under IDEA and Medicaid billing rules. We don't make clinical decisions — we make the data visible to the professionals who do."
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">Samsung's Language Problem</div>
+    <div class="card coral">
+      <h3>Samsung Used "Remote Patient Monitoring" — We Don't</h3>
+      <p>In the transcripts, Samsung's team twice used the phrase "remote patient monitoring" to describe our use case. This is Samsung's internal categorization language — it's how they classify freestanding mode deployments in healthcare. Do not adopt this language. If Samsung uses it, don't correct them in the meeting — but do not echo it back. Your language is "wearable data collection for educational and therapeutic support settings."</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ========== TAB 8: RED ZONES ========== -->
+<div class="panel" id="panel-redzone">
+
+  <div class="sec">
+    <div class="sec-title">🔴 Red Zones — Do Not Cross</div>
+    <h2>Hard Stops for Tomorrow's Meeting</h2>
+    <p>These are not guidelines. These are absolute limits. If any conversation approaches one of these zones, stop talking and redirect.</p>
+  </div>
+
+  <div class="alert red" style="margin-bottom:14px">
+    <span class="alert-label">🔴 Red Zone 1 — Patent Details</span>
+    Do NOT discuss specific claim language, exact algorithm parameters, specific threshold values, or training data approaches. The NDA covers general architecture disclosure. Detailed patent specifics stay with Edwin De Angel. If asked: "We're happy to go deeper on architecture — specific claim language we keep with our patent counsel."
+  </div>
+
+  <div class="alert red" style="margin-bottom:14px">
+    <span class="alert-label">🔴 Red Zone 2 — FDA Triggering Language</span>
+    Do NOT say: diagnose, treat, therapeutic, patient, remote patient monitoring, clinical dashboard, biomarker, meltdown, overstimulation, anxiety, stress detection, behavior modification, intervention. Full list in the FDA Language tab. ONE of these words in a Samsung meeting can change how they categorize you internally.
+  </div>
+
+  <div class="alert red" style="margin-bottom:14px">
+    <span class="alert-label">🔴 Red Zone 3 — Cost Commitments</span>
+    Do NOT commit to any numbers. Whatever Samsung presents on costs today, Megan's response is: "This is helpful — I want to evaluate this in the context of our full partnership structure before I respond to specifics." Your job is to answer technical questions, not to respond to cost proposals.
+  </div>
+
+  <div class="alert red" style="margin-bottom:14px">
+    <span class="alert-label">🔴 Red Zone 4 — Ecosystem Partner Introductions</span>
+    Do NOT agree to AngelSense or any other ecosystem partner introduction today. Julie already cautioned about IP protection. If Samsung raises it, say: "We appreciate that — we want to make sure our architecture is fully validated before we look at integrations."
+  </div>
+
+  <div class="alert red" style="margin-bottom:14px">
+    <span class="alert-label">🔴 Red Zone 5 — IP Transfer or Licensing Discussion</span>
+    Do NOT engage with any conversation about Samsung accessing your code, algorithm, or data. Alex already confirmed Samsung wants no IP — but if any new framing emerges, defer immediately. "IP questions go through our patent attorney and our NDA governs what we share."
+  </div>
+
+  <div class="alert red" style="margin-bottom:14px">
+    <span class="alert-label">🔴 Red Zone 6 — Speaking Over Megan</span>
+    Megan runs this room. You speak when she defers to you or when Tim asks you a direct technical question. Do not volunteer information, do not answer business questions, do not interrupt. If you're unsure whether to speak, wait for Megan to invite you.
+  </div>
+
+  <div class="alert red" style="margin-bottom:14px">
+    <span class="alert-label">🔴 Red Zone 7 — Bluffing on Technical Details</span>
+    Tim Calabro has 23 years of mobile solution engineering. He will know immediately if you're bluffing. If you don't know an answer, say: "I want to give you an accurate answer rather than a fast one — can I follow up directly after this meeting?" Never guess.
+  </div>
+
+  <div class="alert red">
+    <span class="alert-label">🔴 Red Zone 8 — Confirming "Education Only" Classification</span>
+    Samsung may try to categorize you as "education" to sidestep FDA complexity. Do not accept this framing. You are assistive technology that serves both education AND clinical settings. If Samsung says "so you're in the education vertical" — respond: "We sit under IDEA as assistive technology, but we serve licensed OTs and SLPs who bill through Medicaid — so we operate across both education and clinical channels."
+  </div>
+
+  <div class="sec" style="margin-top:32px">
+    <div class="sec-title">Green Zones — Safe to Discuss Freely</div>
+
+    <div class="alert green" style="margin-bottom:10px">
+      <span class="alert-label">✅ Safe Topics</span>
+      Four-state FSM architecture · Audio pipeline with rolling buffer and amplitude-only capture · Samsung Health Sensor SDK data types · Freestanding mode understanding · Knox Manage deployment architecture · LTE connectivity rationale · Battery optimization via adaptive sampling · Room database on-device storage · Dual-device architecture at high level · UTC engineering partnership at high level · Patent filing status (filed March 5, non-provisional) · Go-to-market (schools first) · Pilot timeline (fall 2026) · 12 schools ready to pilot
+    </div>
+  </div>
+
+</div>
+
+<!-- SCROLL TOP -->
+<div class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
+
+<script>
+function showTab(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function toggleQA(el) {
+  const answer = el.nextElementSibling;
+  const toggle = el.querySelector('.qa-toggle');
+  const isOpen = answer.classList.contains('open');
+  answer.classList.toggle('open');
+  toggle.classList.toggle('open');
+}
+
+window.addEventListener('scroll', () => {
+  const btn = document.getElementById('scrollTop');
+  btn.classList.toggle('visible', window.scrollY > 300);
+});
+</script>
+</body>
+</html>
